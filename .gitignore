@@ -1,0 +1,7 @@
+venv
+.venv
+Input
+temp
+Result
+Output
+__pycache__

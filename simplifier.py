@@ -3,12 +3,13 @@ import shutil
 import docx2pdf as d2p
 from tqdm import tqdm
 from PyPDF2 import PdfMerger
+import ppt2pdf.main as ppt2pdf
 
 class Simplifier:
     PATH = os.getcwd()
     t_PATH = os.path.join(PATH, "temp")
     I_PATH = os.path.join(PATH, "Input")
-    R_PATH = os.path.join(PATH, "Result")
+    R_PATH = os.path.join(PATH, "Output")
 
     def __init__(self):
         try:
@@ -18,9 +19,9 @@ class Simplifier:
             print("'Input' folder already exist in " + self.PATH + ", and will not be created.")
         try:
             os.mkdir(self.R_PATH)
-            print("'Result' folder created in " + self.PATH)
+            print("'Output' folder created in " + self.PATH)
         except:
-            print("'Result' folder already exist in " + self.PATH + ", and will not be created.")
+            print("'Output' folder already exist in " + self.PATH + ", and will not be created.")
         try:
             os.mkdir(self.t_PATH)
             print("Temporary folder 'temp' created in " + self.PATH)
@@ -43,8 +44,14 @@ class Simplifier:
                 case "docx":
                     f_newName = f.rpartition('.')[0] + ".pdf"
                     d2p.convert(os.path.join(self.I_PATH, f), os.path.join(self.t_PATH, f_newName))
+                case "ppt":
+                    f_newName = f.rpartition('.')[0] + ".pdf"
+                    ppt2pdf.convert(os.path.join(self.I_PATH, f), os.path.join(self.t_PATH, f_newName))
+                case "pptx":
+                    f_newName = f.rpartition('.')[0] + ".pdf"
+                    ppt2pdf.convert(os.path.join(self.I_PATH, f), os.path.join(self.t_PATH, f_newName))
                 case _:
-                    tqdm.write("For now, the program can't work with file " + f) #need to add functional
+                    tqdm.write("For now, the program can't work with file " + f) #TODO:need to add functional
 
     def merge(self):
         FILES = [f for f in os.listdir(self.t_PATH) if os.path.isfile(os.path.join(self.t_PATH, f))]
